@@ -1,0 +1,59 @@
+SENTINELLE — caméra de surveillance intelligente pour téléphones Android
+=======================================================================
+
+CE QUE ÇA FAIT
+- Le téléphone filme UNIQUEMENT quand il reconnaît une PERSONNE ou un ANIMAL
+  (un modèle d'IA reconnaît les silhouettes : le vent, les arbres et l'herbe sont ignorés).
+- Il enregistre l'image ET le son, en qualité maximale (4K si le téléphone le permet).
+- Dès qu'il détecte quelqu'un : une photo t'est envoyée sur Telegram, puis la vidéo à la fin.
+- Zoom réglable à distance (page web ou commande Telegram).
+- Vue en direct depuis l'extérieur (avec Tailscale, gratuit).
+- Fonctionne écran éteint, relancé tout seul si Android le coupe.
+
+ÉTAPE 1 — Créer le bot Telegram (2 minutes)
+1. Dans Telegram, cherche @BotFather, envoie /newbot, choisis un nom.
+   Il te donne un TOKEN (ex. 123456:ABC...). Garde-le.
+2. Ouvre ton nouveau bot et envoie-lui /start.
+3. Cherche @userinfobot, envoie-lui un message : il te donne ton CHAT ID (un nombre).
+
+ÉTAPE 2 — Fabriquer l'APK (gratuit, ~5 minutes, sur ordinateur)
+1. Crée un compte sur github.com.
+2. New repository -> nom : sentinelle -> Create.
+3. "uploading an existing file" -> décompresse Sentinelle.zip et glisse TOUT le contenu
+   (dossier app, fichiers .kts, gradle.properties...) -> Commit.
+4. Le dossier caché .github n'est parfois pas envoyé. Vérifie : si tu ne le vois pas,
+   clique "Add file" -> "Create new file", tape comme nom :  .github/workflows/build.yml
+   et colle le contenu du fichier WORKFLOW_build.yml.txt -> Commit.
+5. Onglet "Actions" -> "Build APK" -> attends la coche verte (~5 min).
+6. Clique sur le build -> en bas "Artifacts" -> Sentinelle-APK -> télécharge, décompresse :
+   tu obtiens app-debug.apk.
+7. Envoie l'APK sur chaque téléphone (WhatsApp, câble, Drive) et installe-le
+   (autorise "sources inconnues" quand Android le demande).
+   Si le build affiche une croix rouge, copie-moi l'erreur et je corrige.
+
+ÉTAPE 3 — Configurer chaque téléphone-caméra
+1. Ouvre Sentinelle. Remplis : Token, Chat ID, un nom différent par caméra (Salon, Garage...).
+2. Choisis la qualité, appuie sur "Démarrer la surveillance".
+3. Accepte caméra, micro, notifications, et "ne pas optimiser la batterie".
+4. Branche le téléphone au chargeur et pose-le bien fixe.
+   Conseil : de nuit, laisse une lumière : l'IA voit mal dans le noir total.
+
+COMMANDES TELEGRAM (depuis ton téléphone, de n'importe où)
+/photo          image maintenant
+/video 20       filme 20 secondes
+/zoom 3         règle le zoom
+/arm /disarm    active ou coupe la détection
+/status         état de la caméra
+
+VUE EN DIRECT DEPUIS L'EXTÉRIEUR (Tailscale)
+1. Installe l'appli Tailscale (Play Store) sur TOUS les téléphones, même compte.
+2. L'écran de Sentinelle affiche une adresse http://100.x.x.x:8080/?k=PIN
+3. Ouvre-la dans Chrome sur ton téléphone : image en direct, zoom, bouton Filmer,
+   liste et téléchargement des vidéos. Chrome -> "Ajouter à l'écran d'accueil" pour un raccourci.
+
+BON À SAVOIR
+- La vidéo démarre ~1 seconde après avoir vu quelqu'un.
+- Telegram limite les vidéos à 50 Mo : au-delà (4K), tu reçois un message et la vidéo se
+  récupère sur la page web. Choisis "Full HD" si tu préfères tout recevoir sur Telegram.
+- Les vidéos sont gardées dans le téléphone (les plus anciennes sont effacées après 6 Go).
+- Le zoom utilise l'optique si le téléphone en a une, sinon c'est numérique.
